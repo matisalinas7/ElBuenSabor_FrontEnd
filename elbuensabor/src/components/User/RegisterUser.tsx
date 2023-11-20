@@ -1,5 +1,5 @@
 import { useState } from "react"
-import axios from 'axios';
+import { AuthService } from "../../services/AuthService";
 
 const Register = () => {
     const [userData, setUserData] = useState ({
@@ -17,14 +17,13 @@ const Register = () => {
         });
     };
 
-    const handleRegister = () => {
-        axios.post('http://localhost:8080/auth/register', userData)
-        .then(response => {
-            console.log('Usuario registrado con exito!', response.data)
-        })
-        .catch(error => {
-            console.log('Error al registrar usuario', error);
-        });
+    const handleRegister = async () => {
+        try {
+            const token = await AuthService.register(userData);
+            console.log("Registro exitoso", token);
+        } catch (error) {
+            console.log("Error al registrarse:");
+        }        
     };
 
     return (
