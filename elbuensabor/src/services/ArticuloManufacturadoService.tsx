@@ -1,8 +1,9 @@
 import { BASE_URL } from "../Config";
+import { ArticuloManufacturado } from "../types/ArticuloManufacturado";
 
 export const ArticuloManufacturadoService = {
   getArticulos: async () => {
-    const response = await fetch(`${BASE_URL}/articulos`);
+    const response = await fetch(`${BASE_URL}/elbuensabor/v1/articulosmanufacturados`);
     if (!response.ok) {
       throw new Error('Error al obtener la lista de artículos');
     }
@@ -12,7 +13,7 @@ export const ArticuloManufacturadoService = {
 
   addArticulo: async (formData: { nombre: string, descripcion: string, precioVenta: number, tiempoEstimadoCocina: number }) => {
     try {
-      const response = await fetch(`${BASE_URL}/articulos`, {
+      const response = await fetch(`${BASE_URL}/elbuensabor/v1/articulosmanufacturados`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,14 +30,14 @@ export const ArticuloManufacturadoService = {
     }
   },
 
-  updateArticulo: async (articuloId: number, formData: { nombre: string, descripcion: string, precioVenta: number, tiempoEstimadoCocina: number }) => {
+  updateArticulo: async (articuloId: number, data: ArticuloManufacturado) => {
     try {
-      const response = await fetch(`${BASE_URL}/articulos/${articuloId}`, {
+      const response = await fetch(`${BASE_URL}/elbuensabor/v1/articulosmanufacturados/${articuloId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(data),
       });
 
       if (!response.ok) {
@@ -50,7 +51,7 @@ export const ArticuloManufacturadoService = {
 
   deleteArticulo: async (articuloId: number) => {
     try {
-      const response = await fetch(`${BASE_URL}/articulos/${articuloId}`, {
+      const response = await fetch(`${BASE_URL}/elbuensabor/v1/articulosmanufacturados/${articuloId}`, {
         method: 'DELETE',
       });
 

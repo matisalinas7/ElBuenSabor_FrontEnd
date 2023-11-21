@@ -1,14 +1,14 @@
 import React from "react";
 import RegisterUser from './components/User/LoginUser';
 import LoginUser from './components/User/RegisterUser';
-import ArticuloManufacturadoManagement from './components/ArticuloManufacturado/ArticuloManufacturadoABM'
+import ArticuloManufacturadoABM from "./components/ArticuloManufacturado/ArticuloManufacturadoABM";
 
 const App: React.FC = () => {
   return (
     <div>
       <RegisterUser/>
       <LoginUser/>
-      <ArticuloManufacturadoManagement/>
+      <ArticuloManufacturadoABM/>
     </div>
   );
 };

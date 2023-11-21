@@ -1,17 +1,19 @@
 import { useState, useEffect } from "react";
 import { ArticuloManufacturadoService } from "../../services/ArticuloManufacturadoService";
 import "./ArticuloManufacturadoABM.css"; // Archivo de estilos (puedes personalizarlos)
+import { ArticuloManufacturado } from "../../types/ArticuloManufacturado";
 
 const ArticuloManufacturadoABM = () => {
-  const [articulos, setArticulos] = useState([]);
-  const [formData, setFormData] = useState({
+  const [articulos, setArticulos] = useState<ArticuloManufacturado[]>([]);
+  const [formData, setFormData] = useState<ArticuloManufacturado>({
+    id: 0,
     nombre: "",
     descripcion: "",
     precioVenta: 0,
     tiempoEstimadoCocina: 0,
   });
 
-  const [selectedArticulo, setSelectedArticulo] = useState<{id: number} | null>(null);
+  const [selectedArticulo, setSelectedArticulo] = useState<ArticuloManufacturado | null>(null);
 
   const handleInputChange = (e) => {
     setFormData({
@@ -34,7 +36,7 @@ const ArticuloManufacturadoABM = () => {
     if (!selectedArticulo) return;
 
     try {
-      await ArticuloManufacturadoService.updateArticulo(selectedArticulo, formData);
+      await ArticuloManufacturadoService.updateArticulo(selectedArticulo.id, formData);
       fetchArticulos();
       clearForm();
     } catch (error) {
@@ -54,9 +56,10 @@ const ArticuloManufacturadoABM = () => {
     }
   };
 
-  const handleSelectArticulo = (articulo) => {
+  const handleSelectArticulo = (articulo: ArticuloManufacturado) => {
     setSelectedArticulo(articulo);
     setFormData({
+      id: articulo.id,
       nombre: articulo.nombre,
       descripcion: articulo.descripcion,
       precioVenta: articulo.precioVenta,
@@ -66,6 +69,7 @@ const ArticuloManufacturadoABM = () => {
 
   const clearForm = () => {
     setFormData({
+      id: 0,
       nombre: "",
       descripcion: "",
       precioVenta: 0,
@@ -120,7 +124,7 @@ const ArticuloManufacturadoABM = () => {
       <div className="articulo-list-container">
         <h3>Lista de Artículos</h3>
         <ul>
-          {articulos.map((articulo: {id: number, nombre: string}) => (
+          {articulos.map((articulo: ArticuloManufacturado) => (
             <li key={articulo.id} onClick={() => handleSelectArticulo(articulo)} className={selectedArticulo && selectedArticulo.id === articulo.id ? "selected" : ""}>
               {articulo.nombre}
             </li>
