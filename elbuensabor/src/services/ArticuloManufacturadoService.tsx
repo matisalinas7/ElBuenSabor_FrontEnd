@@ -1,62 +1,65 @@
-// ../services/ProductService.ts
 import { BASE_URL } from "../Config";
 
-export const ProductService = {
-  getAllProducts: async (): Promise<Product[]> => {
-    const response = await fetch(`${BASE_URL}/elbuensabor/v1/articulosmanufacturados`);
+export const ArticuloManufacturadoService = {
+  getArticulos: async () => {
+    const response = await fetch(`${BASE_URL}/articulos`);
     if (!response.ok) {
-      throw new Error('Error al obtener la lista de productos');
+      throw new Error('Error al obtener la lista de artículos');
     }
-    const products: Product[] = await response.json();
-    return products;
+    const data = await response.json();
+    return data;
   },
 
-  addProduct: async (newProduct: Product): Promise<void> => {
-    const response = await fetch(`${BASE_URL}elbuensabor/v1/articulosmanufacturados`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify(newProduct),
-    });
+  addArticulo: async (formData: { nombre: string, descripcion: string, precioVenta: number, tiempoEstimadoCocina: number }) => {
+    try {
+      const response = await fetch(`${BASE_URL}/articulos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    if (!response.ok) {
-      throw new Error('Error al agregar un nuevo producto');
-    }
-  },
-
-  updateProduct: async (productId: number, updatedProduct: Product): Promise<void> => {
-    const response = await fetch(`${BASE_URL}/elbuensabor/v1/articulosmanufacturados/${productId}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-      body: JSON.stringify(updatedProduct),
-    });
-
-    if (!response.ok) {
-      throw new Error('Error al actualizar el producto');
+      if (!response.ok) {
+        throw new Error('Error al agregar artículo');
+      }
+    } catch (error) {
+      console.error('Error en addArticulo:', error);
+      throw error;
     }
   },
 
-  deleteProduct: async (productId: number): Promise<void> => {
-    const response = await fetch(`${BASE_URL}/elbuensabor/v1/articulosmanufacturados/${productId}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
+  updateArticulo: async (articuloId: number, formData: { nombre: string, descripcion: string, precioVenta: number, tiempoEstimadoCocina: number }) => {
+    try {
+      const response = await fetch(`${BASE_URL}/articulos/${articuloId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
 
-    if (!response.ok) {
-      throw new Error('Error al eliminar el producto');
+      if (!response.ok) {
+        throw new Error('Error al actualizar artículo');
+      }
+    } catch (error) {
+      console.error('Error en updateArticulo:', error);
+      throw error;
+    }
+  },
+
+  deleteArticulo: async (articuloId: number) => {
+    try {
+      const response = await fetch(`${BASE_URL}/articulos/${articuloId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Error al eliminar artículo');
+      }
+    } catch (error) {
+      console.error('Error en deleteArticulo:', error);
+      throw error;
     }
   },
 };
-
-export interface Product {
-  id: number;
-  name: string;
-  price: number;
-}

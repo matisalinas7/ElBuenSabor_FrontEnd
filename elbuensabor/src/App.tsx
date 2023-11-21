@@ -1,7 +1,7 @@
 import React from "react";
 import RegisterUser from './components/User/LoginUser';
 import LoginUser from './components/User/RegisterUser';
-import ArticuloManufacturadoManagement from './components/ArticuloManufacturado/ArticuloManufacturadoManagement'
+import ArticuloManufacturadoManagement from './components/ArticuloManufacturado/ArticuloManufacturadoABM'
 
 const App: React.FC = () => {
   return (
